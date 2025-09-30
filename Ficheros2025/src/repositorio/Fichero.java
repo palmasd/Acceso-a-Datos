@@ -2,6 +2,7 @@ package repositorio;
 
 import Excepciones.ExcepcionPersonalizada;
 import modelo.Incidencia;
+import modelo.ListaIncidencias;
 import vista.Consola;
 
 import java.io.*;
@@ -37,13 +38,13 @@ public class Fichero {
     //Hacer los metodos generales para la reutilizacion de codigo a posterior
 
 
-    public  void AddDato(String dato){
+    public void AddDato(String dato){
         //añadir la linea al fichero de texto
-        ruta = "datos/datos.txt";
+        ruta = "Ficheros2025/datos/datos.txt";
         FileWriter fichero= null;
 
         try{
-            fichero = new FileWriter(ruta, true);
+            fichero = new FileWriter("Ficheros2025/datos/datos.txt", true);
             fichero.write(dato + "\n");
         }catch (IOException e){
             //throw new RuntimeException();
@@ -62,8 +63,8 @@ public class Fichero {
     }
 
 
-    public void leerFichero(String [] dato) {
-        ruta = "datos/datos.txt";
+    public void leerFichero(ArrayList<ListaIncidencias> dato) {
+        ruta = "Ficheros2025/datos/datos.txt";
         String cadena = "";
         FileReader fichero = null;
         BufferedReader lector = null;

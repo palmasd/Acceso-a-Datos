@@ -79,7 +79,7 @@ public class ControladorIncidencias {
                         break;
                     case 2:
                         buscarUsuario = Escaner.pedirString("Buscar por Usuario");
-
+                        ServicioFichero.leerFicheroPorUsuario(buscarUsuario);
 
                         break;
                     case 3:

@@ -2,7 +2,6 @@ package servicio;
 
 import modelo.Incidencia;
 import modelo.ListaIncidencias;
-import modelo.Pokemon;
 import repositorio.Fichero;
 
 import java.time.LocalDateTime;
@@ -30,13 +29,11 @@ public class ServicioFichero {
     miFichero.AddDato(formatearCadena(incidencia));
     }
 
-    public static void leerFicheroPorUsuario(String usuario, ArrayList<ListaIncidencias> misIncidencias) {
+    public static void leerFicheroPorUsuario(String usuario) {
 
-        String [] dato;
-        dato = misIncidencias.spliterator();
-
+        ArrayList<ListaIncidencias> misIncidencias = new ArrayList<>();
         Fichero miFichero = new Fichero("datos/datos.txt");
-        miFichero.leerFichero(dato);
+        miFichero.leerFichero(misIncidencias);
     }
 
 
