@@ -1,17 +1,10 @@
 package repositorio;
 
-import Excepciones.ExcepcionPersonalizada;
-import modelo.Incidencia;
-import modelo.ListaIncidencias;
 import vista.Consola;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Fichero {
 
@@ -40,20 +33,20 @@ public class Fichero {
     //Hacer los metodos generales para la reutilizacion de codigo a posterior
 
 
-    public void AddDato(String dato){
+    public void AddDato(String dato) {
         //añadir la linea al fichero de texto
         ruta = "Ficheros2025/datos/datos.txt";
-        FileWriter fichero= null;
+        FileWriter fichero = null;
 
-        try{
+        try {
             fichero = new FileWriter("Ficheros2025/datos/datos.txt", true);
             fichero.write(dato + "\n");
-        }catch (IOException e){
+        } catch (IOException e) {
             //throw new RuntimeException();
             Consola.mostrarString("el Fichero no se pudo añadir");
         } finally {
             try {
-                if (fichero!=null){
+                if (fichero != null) {
                     fichero.close();
                 }
             } catch (IOException e) {
@@ -66,38 +59,38 @@ public class Fichero {
 
 
     public List<String> leerFichero() {
-        List<String> listaCadena= new ArrayList<>();
+        List<String> listaCadena = new ArrayList<>();
         ruta = "Ficheros2025/datos/datos.txt";
         String cadena = "";
         FileReader fichero = null;
         BufferedReader lector = null;
 
-        try{
+        try {
             fichero = new FileReader(ruta);
             lector = new BufferedReader(fichero);
 
-            do{
+            do {
                 cadena = lector.readLine();
-                if (cadena!=null){ //si no esta vacio ->
+                if (cadena != null) { //si no esta vacio ->
                     listaCadena.add(cadena); //una vez tenemos el Objeto Incidencia lo metemos a la ListaIncidencia en un arrayList
                 }
-            }while(cadena!=null);//lee hasta que no haya nada mas que leer
+            } while (cadena != null);//lee hasta que no haya nada mas que leer
 
-        }catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             Consola.mostrarString("Error no se encontro el fichero"); //usar consola.mostrar
-        }catch (IOException e){
+        } catch (IOException e) {
             Consola.mostrarString("No pudo leer el fichero");
         } catch (Exception e) {
             Consola.mostrarString("Error inesperado");
         } finally {
             try {
-                if (lector!=null){
+                if (lector != null) {
                     lector.close();
                 }
-                if (fichero!=null){
+                if (fichero != null) {
                     fichero.close();
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("error");
             }
         }

@@ -1,7 +1,6 @@
 package servicio;
 
 import modelo.Incidencia;
-import modelo.ListaIncidencias;
 import repositorio.Fichero;
 import vista.Consola;
 
@@ -10,16 +9,27 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.FormatoFecha;
+
 public class ServicioFichero {
+
+    //metodo para castear los String que se leen en el fichero pasarlos a objetos
+    public static Incidencia aObjeto(String cadena) {
+        String[] dividido = cadena.split(";"); //lee el fichero en String y los mete en un array sin " ; "
+
+        String fechaHoraStr = dividido[0] + " " + dividido[1]; // en las dos primeras posiciones fecha y hora los tranforma en uno solo;
+        LocalDateTime fechaHora = FormatoFecha.parsearFechaHora(fechaHoraStr); //recibo el formato que debo utilizar y lo paso a LocalDateTime
+
+        //Usuario-fecha/hora-Excepcion
+        return new Incidencia(dividido[2], fechaHora, dividido[3]);
+    }
 
 
     public static String formatearCadena(Incidencia incidencia) {
 
-        DateTimeFormatter fechaFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        String fechaStr = incidencia.getFecha().format(fechaFormatter);
-        String horaStr = incidencia.getFecha().format(horaFormatter);
+        //Formateamos la fecha de LocalDateTime para dividirlo entre la fecha y la hora y luego poder insertar correctamente
+       String fechaStr = FormatoFecha.formatearFecha(incidencia.getFecha());
+       String horaStr = FormatoFecha.formatearHora(incidencia.getFecha());
 
         return fechaStr + ";" + horaStr + ";" + incidencia.getExcepcion() + ";" + incidencia.getUsuario();
     }
@@ -41,8 +51,8 @@ public class ServicioFichero {
         //creo una lista para poder meter los usuarios ya filtrados
         ArrayList<Incidencia> filtradas = new ArrayList<>();
 
-        for (String linea : lineas) { //recorremos la lista de tipo String
-            Incidencia inc = Incidencia.aObjeto(linea); //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
+        for (String linea : lineas) {                           //recorremos la lista de tipo String
+            Incidencia inc = aObjeto(linea);                    //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
 
             if (inc.getUsuario().equalsIgnoreCase(usuario)) {
                 filtradas.add(inc);
@@ -60,7 +70,7 @@ public class ServicioFichero {
         }
     }
 
-    public static void leerIncidenciaFecha(String fecha) {
+    public static void leerIncidenciaFecha(String fechaInicio, String fechaFin) {
 
         Fichero miFichero = new Fichero("datos/datos.txt");
 
@@ -71,24 +81,26 @@ public class ServicioFichero {
         //creo una lista para poder meter los usuarios ya filtrados
         ArrayList<Incidencia> filtradas = new ArrayList<>();
 
-        for (String linea : lineas) { //recorremos la lista de tipo String
-            Incidencia inc = Incidencia.aObjeto(linea); //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
+        //Formateamos las fechas que vienen en String para pasarlas a LocalDateTme y asi leerlas correctamente
+        LocalDateTime fechaIni = FormatoFecha.parsearFechaHora(fechaInicio);
+        LocalDateTime fechaFinal = FormatoFecha.parsearFechaHora(fechaFin);
 
-            if (inc.getFecha().equals(fecha)) {
+        for (String linea : lineas) { //recorremos la lista de tipo String
+            Incidencia inc = aObjeto(linea); //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
+
+            if (inc.getFecha().isAfter(fechaIni) && inc.getFecha().isBefore(fechaFinal)) {
                 filtradas.add(inc);
             }
         }
 
         //Muestra las incidencias
         if (filtradas.isEmpty()) {
-            Consola.mostrarString("No hay incidencias para el usuario: " + fecha);
+            Consola.mostrarString("No hay incidencias para esas fechas: " + fechaInicio + fechaFin);
         } else {
-            Consola.mostrarString("Incidencias del usuario " + fecha + ":");
+            Consola.mostrarString("Incidencias desde: " + fechaInicio + " hasta " + fechaFin);
             for (Incidencia i : filtradas) {
                 Consola.mostrarString(i.toString());
             }
         }
     }
-
-
 }

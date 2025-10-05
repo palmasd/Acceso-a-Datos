@@ -1,15 +1,13 @@
 package vista;
 
-import java.time.LocalDateTime;
-
 public class Consola {
 
-    public static void mostrarString(String mensaje){
+    public static void mostrarString(String mensaje) {
         System.out.println(mensaje);
 
     }
 
-    public static void mostrarMenu(){
+    public static void mostrarMenu() {
         System.out.println("====Menu Principal====\n" +
                 "1. añadir Incidencia\n" +
                 "2. Buscar por Usuario\n" +

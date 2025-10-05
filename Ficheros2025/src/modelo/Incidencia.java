@@ -1,15 +1,15 @@
 package modelo;
 
+import utils.FormatoFecha;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Scanner;
 
 public class Incidencia {
 
-private LocalDateTime fecha;
-private String excepcion;
-private String usuario;
+    private LocalDateTime fecha;
+    private String excepcion;
+    private String usuario;
 
     public Incidencia(String excepcion, LocalDateTime fecha, String usuario) {
         this.fecha = fecha;
@@ -25,11 +25,11 @@ private String usuario;
         this.usuario = usuario;
     }
 
-    public LocalDateTime getFecha(){
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha){
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
@@ -41,22 +41,12 @@ private String usuario;
         this.excepcion = excepcion;
     }
 
-    public static Incidencia aObjeto(String cadena){
-        String[] dividido = cadena.split(";");
-
-        String fechaHoraStr = dividido[0] + " " + dividido[1];
-        DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraStr, fechaFormato);
-
-        //Usuario-fecha/hora-Excepcion
-        return new Incidencia(dividido[2], fechaHora, dividido[3]);
-    }
 
     @Override
     public String toString() {
         return "Incidencia{" +
                 ", usuario='" + usuario + '\'' +
-                ", fecha='" + fecha + '\'' +
+                ", fecha='" + FormatoFecha.parsearFechaHora(fecha) + '\'' + //formato correcto en el cual leera la fecha del LocalDateTime
                 ", exception='" + excepcion + '\'' +
                 '}';
     }

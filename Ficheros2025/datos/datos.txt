@@ -7,3 +7,5 @@
 2025-10-01;19:47:52;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: a;david
 2025-10-02;00:35:34;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: a;david
 2025-10-02;02:17:08;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: incidencia manual;juan
+2025-10-05;21:04:27;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: a;david
+2025-10-05;21:19:10;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: ultima;david
