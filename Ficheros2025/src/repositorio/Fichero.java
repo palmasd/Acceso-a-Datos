@@ -9,6 +9,8 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Fichero {
@@ -63,7 +65,8 @@ public class Fichero {
     }
 
 
-    public void leerFichero(ArrayList<ListaIncidencias> dato) {
+    public List<String> leerFichero() {
+        List<String> listaCadena= new ArrayList<>();
         ruta = "Ficheros2025/datos/datos.txt";
         String cadena = "";
         FileReader fichero = null;
@@ -75,10 +78,10 @@ public class Fichero {
 
             do{
                 cadena = lector.readLine();
-                if (cadena!=null){
-                    Consola.mostrarString(cadena);
+                if (cadena!=null){ //si no esta vacio ->
+                    listaCadena.add(cadena); //una vez tenemos el Objeto Incidencia lo metemos a la ListaIncidencia en un arrayList
                 }
-            }while(cadena!=null);
+            }while(cadena!=null);//lee hasta que no haya nada mas que leer
 
         }catch (FileNotFoundException e) {
             Consola.mostrarString("Error no se encontro el fichero"); //usar consola.mostrar
@@ -98,19 +101,6 @@ public class Fichero {
                 System.out.println("error");
             }
         }
-
+        return listaCadena; // devolvemos la lista para que el servicio pueda usarla
     }
-
-
-//    public static ArrayList<String> leerFichero(String dato){
-//
-//        return "";
-//    }
-
-//    public static String buscarDAto(LocalDateTime fechaInicio, LocalDateTime fechaFinal){
-//
-//        return "";
-//    }
-
-
 }

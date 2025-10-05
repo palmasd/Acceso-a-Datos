@@ -6,8 +6,7 @@ public class ListaIncidencias {
 
     private ArrayList<Incidencia> lista;
 
-
-    public ListaIncidencias(ArrayList<Incidencia> lista) {
+    public ListaIncidencias() {
         this.lista = new ArrayList<>();
     }
 

@@ -29,15 +29,13 @@ public class ControladorIncidencias {
     }
 
 
+
+
     public static void iniciar() throws ExcepcionPersonalizada {
 
 //      String tipo = Escaner.pedirString("Nombre Usuario");
 //      String nombre = Escaner.pedirString("Nombre pokemon?");
 //
-//      ServicioFichero.guardar(tipo, nombre); //llamo al servicio que interactua con el modelo
-//      ServicioFichero.guardar(new Pokemon(tipo, nombre));
-
-
         String buscarUsuario;
         String buscarFecha;
         int opcion;
@@ -73,17 +71,17 @@ public class ControladorIncidencias {
                             }
                         } catch (ExcepcionPersonalizada e){
                             Consola.mostrarString("Excepcion capturada: " + e.getMessage());
-                            ServicioFichero.guardar(usuario, LocalDateTime.now(), e.toString());
+                            ServicioFichero.guardar(e.toString(), LocalDateTime.now(),usuario );
                         }
 
                         break;
                     case 2:
                         buscarUsuario = Escaner.pedirString("Buscar por Usuario");
-                        ServicioFichero.leerFicheroPorUsuario(buscarUsuario);
-
+                        ServicioFichero.leerIncidenciaPorUsuario(buscarUsuario);
                         break;
                     case 3:
                         buscarFecha = Escaner.pedirString("Busca la fecha por rango");
+                        ServicioFichero.leerIncidenciaFecha(buscarFecha);
                         break;
                     case 4:
                         Consola.mostrarString("Has salido del programa");

@@ -4,3 +4,6 @@
 2025-09-29;13:44:56;Error: se esperaba un número pero metiste: kaks;david
 2025-09-29;13:47:26;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: sd;david
 2025-09-30;14:16:01;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: a;david
+2025-10-01;19:47:52;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: a;david
+2025-10-02;00:35:34;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: a;david
+2025-10-02;02:17:08;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: incidencia manual;juan

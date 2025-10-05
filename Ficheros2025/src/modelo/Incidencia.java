@@ -7,14 +7,14 @@ import java.util.Scanner;
 
 public class Incidencia {
 
-private String usuario;
 private LocalDateTime fecha;
 private String excepcion;
+private String usuario;
 
-    public Incidencia(String usuario, LocalDateTime fecha, String excepcion) {
-        this.usuario = usuario;
+    public Incidencia(String excepcion, LocalDateTime fecha, String usuario) {
         this.fecha = fecha;
         this.excepcion = excepcion;
+        this.usuario = usuario;
     }
 
     public String getUsuario() {
@@ -41,12 +41,23 @@ private String excepcion;
         this.excepcion = excepcion;
     }
 
+    public static Incidencia aObjeto(String cadena){
+        String[] dividido = cadena.split(";");
+
+        String fechaHoraStr = dividido[0] + " " + dividido[1];
+        DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraStr, fechaFormato);
+
+        //Usuario-fecha/hora-Excepcion
+        return new Incidencia(dividido[2], fechaHora, dividido[3]);
+    }
+
     @Override
     public String toString() {
         return "Incidencia{" +
                 ", usuario='" + usuario + '\'' +
                 ", fecha='" + fecha + '\'' +
-                ", excepcion='" + excepcion + '\'' +
+                ", exception='" + excepcion + '\'' +
                 '}';
     }
 
