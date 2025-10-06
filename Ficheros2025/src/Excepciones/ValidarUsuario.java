@@ -4,16 +4,16 @@ import vista.Escaner;
 
 public class ValidarUsuario {
 
-    public static String pedirUsuarioValido() throws ExcepcionPersonalizada {
-        String usuario;
-        usuario = Escaner.pedirString("Escribe un Usuario");
 
-        if (usuario == null) {
-            throw new ExcepcionPersonalizada("El usuario no puede ser nulo");
+
+    public static String UsuarioValido(String mensaje) throws ExcepcionPersonalizada {
+        String usuario;
+        usuario = Escaner.pedirUsuario(mensaje);
+
+        if (usuario == null || usuario.trim().isEmpty()) {
+            throw new ExcepcionPersonalizada("El usuario no puede ser nulo, ni tener espacios, ni estar vacio");
         }
-        if (usuario.isEmpty()) {
-            throw new ExcepcionPersonalizada("El usuario no puede estar vacio");
-        }
+
         if (!usuario.matches("^[a-zA-Z]+$")) {
             throw new ExcepcionPersonalizada("El usuario debe tener letras de la -aA- a la -zZ-");
         }

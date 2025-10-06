@@ -4,27 +4,26 @@ import Excepciones.ExcepcionPersonalizada;
 import servicio.ServicioFichero;
 import vista.Consola;
 import vista.Escaner;
-import static Excepciones.ValidarUsuario.pedirUsuarioValido;
+import static Excepciones.ValidarUsuario.UsuarioValido;
 
 import java.time.LocalDateTime;
 
-
 public class ControladorIncidencias {
 
-    public static void iniciar()  {
+    public static void iniciar() throws ExcepcionPersonalizada {
 
         boolean usuarioValido = false;
+        boolean usuarioValidarBusqueda = false;
         String usuario = "";
-        String buscarUsuario;
+        String buscarUsuario = "";
         String buscarFechaInicio;
         String buscarFechaFin;
         int opcion;
         String input;
 
-
         while (!usuarioValido) {
             try {
-                usuario = pedirUsuarioValido();
+                usuario = UsuarioValido("Escribe tu primer usuario");
                 usuarioValido = true;
 
             } catch (ExcepcionPersonalizada e) {
@@ -53,8 +52,15 @@ public class ControladorIncidencias {
                     }
                     break;
                 case 2:
-                    buscarUsuario = Escaner.pedirString("Buscar por Usuario");
-                    ServicioFichero.leerIncidenciaPorUsuario(buscarUsuario);
+                    while(!usuarioValidarBusqueda){
+                        try {
+                            buscarUsuario = UsuarioValido("Buscar Incidencia por Usuario");
+                            ServicioFichero.leerIncidenciaPorUsuario(buscarUsuario);
+                            usuarioValidarBusqueda = true;
+                        }catch (ExcepcionPersonalizada e){
+                            Consola.mostrarString(e.getMessage());
+                        }
+                    }
                     break;
                 case 3:
                     buscarFechaInicio = Escaner.pedirString("Introduce la primera fecha");

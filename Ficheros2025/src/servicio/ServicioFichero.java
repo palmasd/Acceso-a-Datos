@@ -2,14 +2,12 @@ package servicio;
 
 import modelo.Incidencia;
 import repositorio.Fichero;
+import utils.FormatoFecha;
 import vista.Consola;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import utils.FormatoFecha;
 
 public class ServicioFichero {
 
@@ -28,8 +26,8 @@ public class ServicioFichero {
     public static String formatearCadena(Incidencia incidencia) {
 
         //Formateamos la fecha de LocalDateTime para dividirlo entre la fecha y la hora y luego poder insertar correctamente
-       String fechaStr = FormatoFecha.formatearFecha(incidencia.getFecha());
-       String horaStr = FormatoFecha.formatearHora(incidencia.getFecha());
+        String fechaStr = FormatoFecha.formatearFecha(incidencia.getFecha());
+        String horaStr = FormatoFecha.formatearHora(incidencia.getFecha());
 
         return fechaStr + ";" + horaStr + ";" + incidencia.getExcepcion() + ";" + incidencia.getUsuario();
     }
@@ -76,7 +74,6 @@ public class ServicioFichero {
 
         //leer el fichero en forma de listas de tipo String
         List<String> lineas = miFichero.leerFichero();
-
 
         //creo una lista para poder meter los usuarios ya filtrados
         ArrayList<Incidencia> filtradas = new ArrayList<>();

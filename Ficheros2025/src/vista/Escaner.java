@@ -1,7 +1,6 @@
 package vista;
 
 import java.util.Scanner;
-import java.util.function.Supplier;
 
 public class Escaner {
 
@@ -16,6 +15,10 @@ public class Escaner {
         int numero = sc.nextInt();
         sc.nextLine();
         return numero;
+    }
+
+    public static String pedirUsuario(String usuario){
+        return pedirString(usuario);
     }
 
 }
