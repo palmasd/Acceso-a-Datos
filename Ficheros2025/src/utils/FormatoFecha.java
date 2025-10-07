@@ -7,7 +7,7 @@ public class FormatoFecha {
 
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //formato para leer solo fecha
     private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm:ss");  //formato solo para leer hora
-    private static final DateTimeFormatter FORMATO_COMPLETO = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); //formato para leer ambas
+    public static final DateTimeFormatter FORMATO_COMPLETO = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); //formato para leer ambas
 
 //metodos para utilizar cada uno de los formatos
 

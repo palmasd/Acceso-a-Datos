@@ -1,6 +1,7 @@
 package controlador;
 
 import Excepciones.ExcepcionPersonalizada;
+import Excepciones.ValidarFechas;
 import servicio.ServicioFichero;
 import vista.Consola;
 import vista.Escaner;
@@ -63,8 +64,8 @@ public class ControladorIncidencias {
                     }
                     break;
                 case 3:
-                    buscarFechaInicio = Escaner.pedirString("Introduce la primera fecha");
-                    buscarFechaFin = Escaner.pedirString("Introduce la segunda fecha");
+                    buscarFechaInicio = ValidarFechas.FechaValida("Introduce la primera fecha");
+                    buscarFechaFin = ValidarFechas.FechaValida("Introduce la segunda fecha");
                     ServicioFichero.leerIncidenciaFecha(buscarFechaInicio, buscarFechaFin);
                     break;
                 case 4:

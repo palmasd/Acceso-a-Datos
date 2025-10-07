@@ -21,4 +21,8 @@ public class Escaner {
         return pedirString(usuario);
     }
 
+    public static String pedirFecha(String fecha){
+        return pedirString(fecha);
+    }
+
 }
