@@ -1,6 +1,7 @@
 package servicio;
 
 import modelo.Incidencia;
+import modelo.ListaIncidencias;
 import repositorio.Fichero;
 import utils.FormatoFecha;
 import vista.Consola;
@@ -16,6 +17,7 @@ public class ServicioFichero {
         Incidencia incidencia = new Incidencia(nombre, fecha, excepcion);
         Fichero miFichero = new Fichero("datos/datos.txt");
         miFichero.AddDato(formatearCadena(incidencia));
+
     }
 
     public static void leerIncidenciaPorUsuario(String usuario) {
@@ -25,23 +27,24 @@ public class ServicioFichero {
         //leer el fichero en forma de listas de tipo String
         List<String> lineas = miFichero.leerFichero();
 
-        //creo una lista para poder meter los usuarios ya filtrados
-        ArrayList<Incidencia> filtradas = new ArrayList<>();
+        //uso la lista de la clase ListaIncidencia para almacenar los datos filtrados
+        ListaIncidencias filtradas = new ListaIncidencias();
+
 
         for (String linea : lineas) {                           //recorremos la lista de tipo String
             Incidencia inc = aObjeto(linea);                    //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
 
             if (inc.getUsuario().equalsIgnoreCase(usuario)) {
-                filtradas.add(inc);
+                filtradas.getLista().add(inc);
             }
         }
 
         //Muestra las incidencias
-        if (filtradas.isEmpty()) {
+        if (filtradas.getLista().isEmpty()) {
             Consola.mostrarString("No hay incidencias para el usuario: " + usuario + "\n");
         } else {
             Consola.mostrarString("Incidencias del usuario " + usuario + ":\n");
-            for (Incidencia i : filtradas) {
+            for (Incidencia i : filtradas.getLista()) {
                 Consola.mostrarString(i.toString());
             }
         }
@@ -54,8 +57,8 @@ public class ServicioFichero {
         //leer el fichero en forma de listas de tipo String
         List<String> lineas = miFichero.leerFichero();
 
-        //creo una lista para poder meter los usuarios ya filtrados
-        ArrayList<Incidencia> filtradas = new ArrayList<>();
+        //uso la lista de la clase ListaIncidencia para almacenar las fechas ya filtrados
+        ListaIncidencias filtradas = new ListaIncidencias();
 
         //Formateamos las fechas que vienen en String para pasarlas a LocalDateTme y asi leerlas correctamente
         LocalDateTime fechaIni = FormatoFecha.parsearFechaHora(fechaInicio);
@@ -65,16 +68,16 @@ public class ServicioFichero {
             Incidencia inc = aObjeto(linea); //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
 
             if (!inc.getFecha().isBefore(fechaIni) && !inc.getFecha().isAfter(fechaFinal)) {
-                filtradas.add(inc);
+                filtradas.getLista().add(inc);
             }
         }
 
         //Muestra las incidencias
-        if (filtradas.isEmpty()) {
+        if (filtradas.getLista().isEmpty()) {
             Consola.mostrarString("No hay incidencias para esas fechas: " + fechaInicio + fechaFin);
         } else {
             Consola.mostrarString("Incidencias desde: " + fechaInicio + " hasta " + fechaFin);
-            for (Incidencia i : filtradas) {
+            for (Incidencia i : filtradas.getLista()) {
                 Consola.mostrarString(i.toString());
             }
         }
@@ -90,7 +93,6 @@ public class ServicioFichero {
         //Usuario-fecha/hora-Excepcion
         return new Incidencia(dividido[2], fechaHora, dividido[3]);
     }
-
 
     public static String formatearCadena(Incidencia incidencia) {
 
