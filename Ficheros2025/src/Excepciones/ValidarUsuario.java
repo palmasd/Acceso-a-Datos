@@ -5,7 +5,6 @@ import vista.Escaner;
 public class ValidarUsuario {
 
 
-
     public static String UsuarioValido(String mensaje) throws ExcepcionPersonalizada {
         String usuario;
         usuario = Escaner.pedirUsuario(mensaje);

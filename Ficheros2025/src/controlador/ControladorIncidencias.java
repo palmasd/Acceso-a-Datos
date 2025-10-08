@@ -14,7 +14,6 @@ public class ControladorIncidencias {
     public static void iniciar() throws ExcepcionPersonalizada {
 
         boolean usuarioValido = false;
-        boolean usuarioValidarBusqueda = false;
         String usuario = "";
         String buscarUsuario = "";
         String buscarFechaInicio;
@@ -53,6 +52,7 @@ public class ControladorIncidencias {
                     }
                     break;
                 case 2:
+                    boolean usuarioValidarBusqueda = false;
                     while(!usuarioValidarBusqueda){
                         try {
                             buscarUsuario = UsuarioValido("Buscar Incidencia por Usuario");
@@ -64,9 +64,17 @@ public class ControladorIncidencias {
                     }
                     break;
                 case 3:
-                    buscarFechaInicio = ValidarFechas.FechaValida("Introduce la primera fecha");
-                    buscarFechaFin = ValidarFechas.FechaValida("Introduce la segunda fecha");
-                    ServicioFichero.leerIncidenciaFecha(buscarFechaInicio, buscarFechaFin);
+                    boolean fechaValidaBusqueda = false;
+                    while(!fechaValidaBusqueda){
+                        try{
+                            buscarFechaInicio = ValidarFechas.FechaValida("Introduce la primera fecha");
+                            buscarFechaFin = ValidarFechas.FechaValida("Introduce la segunda fecha");
+                            ServicioFichero.leerIncidenciaFecha(buscarFechaInicio, buscarFechaFin);
+                            fechaValidaBusqueda = true;
+                        }catch (ExcepcionPersonalizada e){
+                            Consola.mostrarString(e.getMessage());
+                        }
+                    }
                     break;
                 case 4:
                     Consola.mostrarString("Has salido del programa");

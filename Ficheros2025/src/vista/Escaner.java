@@ -17,11 +17,11 @@ public class Escaner {
         return numero;
     }
 
-    public static String pedirUsuario(String usuario){
+    public static String pedirUsuario(String usuario) {
         return pedirString(usuario);
     }
 
-    public static String pedirFecha(String fecha){
+    public static String pedirFecha(String fecha) {
         return pedirString(fecha);
     }
 

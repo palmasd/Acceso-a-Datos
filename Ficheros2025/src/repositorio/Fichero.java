@@ -29,10 +29,6 @@ public class Fichero {
                 '}';
     }
 
-    //sobrecarga de metodos pero cada uno con distintos parametros.
-    //Hacer los metodos generales para la reutilizacion de codigo a posterior
-
-
     public void AddDato(String dato) {
         //añadir la linea al fichero de texto
         ruta = "Ficheros2025/datos/datos.txt";
@@ -57,7 +53,6 @@ public class Fichero {
 
     }
 
-
     public List<String> leerFichero() {
         List<String> listaCadena = new ArrayList<>();
         ruta = "Ficheros2025/datos/datos.txt";
@@ -72,7 +67,7 @@ public class Fichero {
             do {
                 cadena = lector.readLine();
                 if (cadena != null) { //si no esta vacio ->
-                    listaCadena.add(cadena); //una vez tenemos el Objeto Incidencia lo metemos a la ListaIncidencia en un arrayList
+                    listaCadena.add(cadena); //una vez tenemos el String de Incidencia lo metemos a la ListaIncidencia en un arrayList
                 }
             } while (cadena != null);//lee hasta que no haya nada mas que leer
 

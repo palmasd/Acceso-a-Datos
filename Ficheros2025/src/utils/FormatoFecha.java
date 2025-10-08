@@ -18,11 +18,12 @@ public class FormatoFecha {
     public static String formatearHora(LocalDateTime fecha) {
         return fecha.format(FORMATO_HORA);
     }
-
+    //parsear un fecha que viene String devolverla como LocalDateTime
     public static LocalDateTime parsearFechaHora(String fechaHoraStr) {
         return LocalDateTime.parse(fechaHoraStr, FORMATO_COMPLETO);
     }
 
+    //parsear un fecha que viene como LocalDate y devolverla como String
     public static String parsearFechaHora(LocalDateTime fechaHoraStr) {
         return fechaHoraStr.format(FORMATO_COMPLETO);
     }

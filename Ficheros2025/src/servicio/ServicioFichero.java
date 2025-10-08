@@ -11,27 +11,6 @@ import java.util.List;
 
 public class ServicioFichero {
 
-    //metodo para castear los String que se leen en el fichero pasarlos a objetos
-    public static Incidencia aObjeto(String cadena) {
-        String[] dividido = cadena.split(";"); //lee el fichero en String y los mete en un array sin " ; "
-
-        String fechaHoraStr = dividido[0] + " " + dividido[1]; // en las dos primeras posiciones fecha y hora los tranforma en uno solo;
-        LocalDateTime fechaHora = FormatoFecha.parsearFechaHora(fechaHoraStr); //recibo el formato que debo utilizar y lo paso a LocalDateTime
-
-        //Usuario-fecha/hora-Excepcion
-        return new Incidencia(dividido[2], fechaHora, dividido[3]);
-    }
-
-
-    public static String formatearCadena(Incidencia incidencia) {
-
-        //Formateamos la fecha de LocalDateTime para dividirlo entre la fecha y la hora y luego poder insertar correctamente
-        String fechaStr = FormatoFecha.formatearFecha(incidencia.getFecha());
-        String horaStr = FormatoFecha.formatearHora(incidencia.getFecha());
-
-        return fechaStr + ";" + horaStr + ";" + incidencia.getExcepcion() + ";" + incidencia.getUsuario();
-    }
-
     public static void guardar(String nombre, LocalDateTime fecha, String excepcion) {
 
         Incidencia incidencia = new Incidencia(nombre, fecha, excepcion);
@@ -59,9 +38,9 @@ public class ServicioFichero {
 
         //Muestra las incidencias
         if (filtradas.isEmpty()) {
-            Consola.mostrarString("No hay incidencias para el usuario: " + usuario);
+            Consola.mostrarString("No hay incidencias para el usuario: " + usuario + "\n");
         } else {
-            Consola.mostrarString("Incidencias del usuario " + usuario + ":");
+            Consola.mostrarString("Incidencias del usuario " + usuario + ":\n");
             for (Incidencia i : filtradas) {
                 Consola.mostrarString(i.toString());
             }
@@ -85,7 +64,7 @@ public class ServicioFichero {
         for (String linea : lineas) { //recorremos la lista de tipo String
             Incidencia inc = aObjeto(linea); //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
 
-            if (inc.getFecha().isAfter(fechaIni) && inc.getFecha().isBefore(fechaFinal)) {
+            if (!inc.getFecha().isBefore(fechaIni) && !inc.getFecha().isAfter(fechaFinal)) {
                 filtradas.add(inc);
             }
         }
@@ -99,5 +78,26 @@ public class ServicioFichero {
                 Consola.mostrarString(i.toString());
             }
         }
+    }
+
+    //metodo para castear los String que se leen en el fichero pasarlos a objetos
+    public static Incidencia aObjeto(String cadena) {
+        String[] dividido = cadena.split(";"); //lee el fichero en String y los mete en un array sin " ; "
+
+        String fechaHoraStr = dividido[0] + " " + dividido[1]; // en las dos primeras posiciones fecha y hora los tranforma en uno solo;
+        LocalDateTime fechaHora = FormatoFecha.parsearFechaHora(fechaHoraStr); //recibo el formato que debo utilizar y lo paso a LocalDateTime
+
+        //Usuario-fecha/hora-Excepcion
+        return new Incidencia(dividido[2], fechaHora, dividido[3]);
+    }
+
+
+    public static String formatearCadena(Incidencia incidencia) {
+
+        //Formateamos la fecha de LocalDateTime para dividirlo entre la fecha y la hora y luego poder insertar correctamente
+        String fechaStr = FormatoFecha.formatearFecha(incidencia.getFecha());
+        String horaStr = FormatoFecha.formatearHora(incidencia.getFecha());
+
+        return fechaStr + ";" + horaStr + ";" + incidencia.getExcepcion() + ";" + incidencia.getUsuario();
     }
 }
