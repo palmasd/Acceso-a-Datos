@@ -25,7 +25,7 @@ public class ValidarFechas {
         try {
               LocalDateTime.parse(fecha, FORMATO_COMPLETO);
         } catch (DateTimeParseException e) {
-            throw new ExcepcionPersonalizada("Formato de fecha no valido: debe ser yyyy-MM-dd HH:mm:ss");
+            throw new ExcepcionPersonalizada("Formato de fecha no valido: debe ser yyyy-MM-dd ");
         }
         return fecha;
     }

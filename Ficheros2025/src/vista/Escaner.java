@@ -25,4 +25,12 @@ public class Escaner {
         return pedirString(fecha);
     }
 
+    public static void limpiarBuffer(){
+        sc.nextLine();
+    }
+
+    public static void cerrarBuffer(){
+        sc.close();
+    }
+
 }

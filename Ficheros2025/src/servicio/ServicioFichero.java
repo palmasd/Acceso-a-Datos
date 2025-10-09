@@ -7,7 +7,6 @@ import utils.FormatoFecha;
 import vista.Consola;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServicioFichero {
@@ -29,7 +28,6 @@ public class ServicioFichero {
 
         //uso la lista de la clase ListaIncidencia para almacenar los datos filtrados
         ListaIncidencias filtradas = new ListaIncidencias();
-
 
         for (String linea : lineas) {                           //recorremos la lista de tipo String
             Incidencia inc = aObjeto(linea);                    //cogemos la cadena (String) y la casteamos a Objeto de tipo Incidencia
