@@ -35,6 +35,7 @@ public class ControladorIncidencias {
         }
          do {
              boolean fechaValidaBusqueda = false;
+            boolean usuarioValidarBusqueda = false;
 
              try {
                     Consola.mostrarMenu();
@@ -56,7 +57,6 @@ public class ControladorIncidencias {
                             }
                             break;
                         case 2:
-                            boolean usuarioValidarBusqueda = false;
                             while (!usuarioValidarBusqueda) {
                                 try {
                                     buscarUsuario = UsuarioValido("Buscar Incidencia por Usuario");
