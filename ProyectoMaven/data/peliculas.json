@@ -1,0 +1,38 @@
+{
+  "listaPeliculas": [
+    {
+      "id": 1,
+      "titulo": "El Viaje Intergaláctico",
+      "duracion": 142,
+      "actores": [
+        {
+          "nombre": "Laura Gómez",
+          "edad": 32,
+          "personaje": "Capitana Nova"
+        },
+        {
+          "nombre": "Carlos Ruiz",
+          "edad": 40,
+          "personaje": "Doctor Andrómeda"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Sombras en la Ciudad",
+      "duracion": 118,
+      "actores": [
+        {
+          "nombre": "Ana Torres",
+          "edad": 28,
+          "personaje": "Detective Vega"
+        },
+        {
+          "nombre": "Javier Molina",
+          "edad": 36,
+          "personaje": "El Fantasma"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+<ListaPeliculas>
+    <pelicula>
+        <id>1</id>
+        <titulo>El Viaje Intergaláctico</titulo>
+        <duracion>142</duracion>
+        <actores>
+            <actor>
+                <nombre>Laura Gómez</nombre>
+                <edad>32</edad>
+                <personaje>Capitana Nova</personaje>
+            </actor>
+            <actor>
+                <nombre>Carlos Ruiz</nombre>
+                <edad>40</edad>
+                <personaje>Doctor Andrómeda</personaje>
+            </actor>
+        </actores>
+    </pelicula>
+
+    <pelicula>
+        <id>2</id>
+        <titulo>Sombras en la Ciudad</titulo>
+        <duracion>118</duracion>
+        <actores>
+            <actor>
+                <nombre>Ana Torres</nombre>
+                <edad>28</edad>
+                <personaje>Detective Vega</personaje>
+            </actor>
+            <actor>
+                <nombre>Javier Molina</nombre>
+                <edad>36</edad>
+                <personaje>El Fantasma</personaje>
+            </actor>
+        </actores>
+    </pelicula>
+</ListaPeliculas>
