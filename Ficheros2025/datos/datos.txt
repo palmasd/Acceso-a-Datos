@@ -12,3 +12,5 @@
 2025-10-06;10:24:27;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: ola error;david
 2025-10-06;11:34:04;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: s;grego
 2025-10-08;23:14:07;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: he metido el nombre incorrecto;davida
+2025-12-02;14:23:57;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: as;david
+2025-12-02;14:24:59;Excepciones.ExcepcionPersonalizada: Error: se esperaba un número pero metiste: david;david

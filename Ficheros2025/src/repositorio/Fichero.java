@@ -31,11 +31,11 @@ public class Fichero {
 
     public void AddDato(String dato) {
         //añadir la linea al fichero de texto
-        ruta = "Ficheros2025/datos/datos.txt";
+        ruta = "datos/datos.txt";
         FileWriter fichero = null;
 
         try {
-            fichero = new FileWriter("Ficheros2025/datos/datos.txt", true);
+            fichero = new FileWriter(ruta, true);
             fichero.write(dato + "\n");
         } catch (IOException e) {
             //throw new RuntimeException();
@@ -55,7 +55,7 @@ public class Fichero {
 
     public List<String> leerFichero() {
         List<String> listaCadena = new ArrayList<>();
-        ruta = "Ficheros2025/datos/datos.txt";
+        ruta = "datos/datos.txt";
         String cadena = "";
         FileReader fichero = null;
         BufferedReader lector = null;
