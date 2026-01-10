@@ -12,7 +12,9 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
+import org.example.modelo.Actor;
 import org.example.modelo.Pelicula;
+import org.example.servicio.IRepositorio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,25 +22,26 @@ import java.util.Properties;
 
 import java.util.Properties;
 
-public class RepositorioMongo {
+public class RepositorioMongo implements IRepositorio {
+
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> collection;
 
     public RepositorioMongo() {
         try {
-// Cargamos propiedades desde application.properties
+            // Cargamos propiedades desde application.properties
             Properties props = new Properties();
             props.load(getClass().getClassLoader().getResourceAsStream("application.properties"));
 
             String mongoUri = props.getProperty("db.mongo.uri", "mongodb://localhost:27017");
             String dbName = props.getProperty("db.mongo.name", "cine");
 
-// Creamos la conexión con MongoDB
+            // Creamos la conexión con MongoDB
             mongoClient = MongoClients.create(mongoUri);
             database = mongoClient.getDatabase(dbName);
 
-// Colección donde almacenaremos películas
+            // Colección donde almacenaremos películas
             collection = database.getCollection("peliculas");
 
             //todo: en el constructor, para cambiar lsa excepciones
@@ -55,8 +58,8 @@ public class RepositorioMongo {
         Document doc = new Document()
                 .append("id", p.getId())
                 .append("titulo", p.getTitulo())
-                .append("genero", p.getDuracion())
-                .append("minutos", p.getListaActores());
+                .append("duracion", p.getDuracion())
+                .append("listaActores", p.getListaActores());
         collection.insertOne(doc);
     }
 
@@ -71,7 +74,7 @@ public class RepositorioMongo {
                     doc.getInteger("id"),
                     doc.getString("titulo"),
                     doc.getInteger("duracion"),
-                    doc.getList("listaActores", Pelicula.class)
+                    doc.getList("listaActores", Actor.class)
             ));
         }
         return lista;
@@ -83,8 +86,8 @@ public class RepositorioMongo {
                 Filters.eq("id", p.getId()),
                 Updates.combine(
                         Updates.set("titulo", p.getTitulo()),
-                        Updates.set("genero", p.getDuracion()),
-                        Updates.set("minutos", p.getListaActores())
+                        Updates.set("duracion", p.getDuracion()),
+                        Updates.set("listaActores", p.getListaActores())
                 )
         );
     }

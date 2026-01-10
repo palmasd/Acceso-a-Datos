@@ -1,37 +1,29 @@
-<ListaPeliculas>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<peliculas>
     <pelicula>
         <id>1</id>
-        <titulo>El Viaje Intergaláctico</titulo>
-        <duracion>142</duracion>
+        <titulo>espias 2</titulo>
+        <duracion>3423</duracion>
         <actores>
             <actor>
-                <nombre>Laura Gómez</nombre>
-                <edad>32</edad>
-                <personaje>Capitana Nova</personaje>
-            </actor>
-            <actor>
-                <nombre>Carlos Ruiz</nombre>
+                <id>103</id>
+                <nombre>Carlos García</nombre>
                 <edad>40</edad>
-                <personaje>Doctor Andrómeda</personaje>
+                <personaje>Villano</personaje>
             </actor>
         </actores>
     </pelicula>
-
     <pelicula>
         <id>2</id>
-        <titulo>Sombras en la Ciudad</titulo>
-        <duracion>118</duracion>
+        <titulo>juan</titulo>
+        <duracion>12344</duracion>
         <actores>
             <actor>
-                <nombre>Ana Torres</nombre>
-                <edad>28</edad>
-                <personaje>Detective Vega</personaje>
-            </actor>
-            <actor>
-                <nombre>Javier Molina</nombre>
-                <edad>36</edad>
-                <personaje>El Fantasma</personaje>
+                <id>1</id>
+                <nombre>david</nombre>
+                <edad>12</edad>
+                <personaje>personajeeees</personaje>
             </actor>
         </actores>
     </pelicula>
-</ListaPeliculas>
+</peliculas>

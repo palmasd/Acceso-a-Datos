@@ -10,11 +10,11 @@ public class Pelicula {
     private int duracion;
     private List<Actor> listaActores;
 
-    public Pelicula(long id, String titulo, int duracion, List<Pelicula> listaActores) {
+    public Pelicula(long id, String titulo, int duracion, List<Actor> listaActores) {
         this.id = id;
         this.titulo = titulo;
         this.duracion = duracion;
-        this.listaActores = new ArrayList<>();
+        this.listaActores = listaActores;
     }
 
     public long getId() {

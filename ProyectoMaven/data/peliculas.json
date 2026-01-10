@@ -1,38 +1,44 @@
-{
-  "listaPeliculas": [
-    {
-      "id": 1,
-      "titulo": "El Viaje Intergaláctico",
-      "duracion": 142,
-      "actores": [
-        {
-          "nombre": "Laura Gómez",
-          "edad": 32,
-          "personaje": "Capitana Nova"
-        },
-        {
-          "nombre": "Carlos Ruiz",
-          "edad": 40,
-          "personaje": "Doctor Andrómeda"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "titulo": "Sombras en la Ciudad",
-      "duracion": 118,
-      "actores": [
-        {
-          "nombre": "Ana Torres",
-          "edad": 28,
-          "personaje": "Detective Vega"
-        },
-        {
-          "nombre": "Javier Molina",
-          "edad": 36,
-          "personaje": "El Fantasma"
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "titulo": "El Viaje Intergaláctico",
+    "duracion": 142
+  },
+  {
+    "id": 2,
+    "titulo": "Sombras en la Ciudad",
+    "duracion": 118
+  },
+  {
+    "id": 1,
+    "titulo": "España",
+    "duracion": 133,
+    "listaActores": [
+      {
+        "id": 1,
+        "nombre": "david",
+        "edad": 13,
+        "personaje": "pricnipal"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "titulo": "espias3",
+    "duracion": 1,
+    "listaActores": [
+      {
+        "id": 1,
+        "nombre": "enrique",
+        "edad": 17,
+        "personaje": "secun"
+      },
+      {
+        "id": 2,
+        "nombre": "juanga",
+        "edad": 45,
+        "personaje": "principal"
+      }
+    ]
+  }
+]

@@ -1,29 +1,33 @@
 package org.example.repositorio;
 
 
+import org.example.modelo.Actor;
 import org.example.modelo.Pelicula;
+import org.example.servicio.IRepositorio;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepositorioXML {
+public class RepositorioXML implements IRepositorio {
 
-    private final String fichero;
+    private final File fichero;
 
     public RepositorioXML(String fichero) {
-        this.fichero = fichero;
-
-        File f = new File(fichero);
-        if (!f.exists()) {
+        this.fichero = new File(fichero);
+        if (!this.fichero.exists()) {
             try {
                 // DocumentBuilderFactory: fábrica para crear DocumentBuilder
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -37,7 +41,7 @@ public class RepositorioXML {
                 doc.appendChild(root);
 
                 // Guardar el documento en disco
-                guardarDocumento(doc, f);
+                guardarDocumento(doc, this.fichero);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -45,99 +49,172 @@ public class RepositorioXML {
         }
     }
 
+
     public void guardar(Pelicula p) {
         try {
-            File f = new File(fichero);
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-// parsea el fichero XML existente
-            Document doc = builder.parse(f);
+            Document doc = crearDocuemnto();
 
             Element root = doc.getDocumentElement();
 
-// Crear nodo <pelicula>
-            Element peliculaNode = doc.createElement("pelicula");
+            Element pelicula = doc.createElement("pelicula");
 
-            Element idNode = doc.createElement("id");
-            idNode.appendChild(doc.createTextNode(String.valueOf(p.getId())));
-            peliculaNode.appendChild(idNode);
+            Element id = doc.createElement("id");
+            id.setTextContent(String.valueOf(p.getId()));
+            pelicula.appendChild(id);
 
-            Element tituloNode = doc.createElement("titulo");
-            tituloNode.appendChild(doc.createTextNode(p.getTitulo()));
-            peliculaNode.appendChild(tituloNode);
+            Element titulo = doc.createElement("titulo");
+            titulo.setTextContent(p.getTitulo());
+            pelicula.appendChild(titulo);
 
-            Element generoNode = doc.createElement("genero");
-            generoNode.appendChild(doc.createTextNode(p.getGenero()));
-            peliculaNode.appendChild(generoNode);
+            Element duracion = doc.createElement("duracion");
+            duracion.setTextContent(String.valueOf(p.getDuracion()));
+            pelicula.appendChild(duracion);
 
-            Element minutosNode = doc.createElement("minutos");
-            minutosNode.appendChild(doc.createTextNode(String.valueOf(p.getMinutos())));
-            peliculaNode.appendChild(minutosNode);
+            Element listaActores = doc.createElement("actores");
 
-            root.appendChild(peliculaNode);
+            System.out.println("Actores en la película: " + p.getListaActores().size());
+            for (Actor a : p.getListaActores()) {
+                Element actor = doc.createElement("actor");
 
-// Guardar XML actualizado con buena indentación
-            guardarDocumento(doc, f);
+                Element idActor = doc.createElement("id");
+                idActor.setTextContent(String.valueOf(a.getId()));
+                actor.appendChild(idActor);
 
+                Element nombre = doc.createElement("nombre");
+                nombre.setTextContent(a.getNombre());
+                actor.appendChild(nombre);
+
+                Element edad = doc.createElement("edad");
+                edad.setTextContent(String.valueOf(a.getEdad()));
+                actor.appendChild(edad);
+
+                Element personaje = doc.createElement("personaje");
+                personaje.setTextContent(a.getPersonaje());
+                actor.appendChild(personaje);
+
+                listaActores.appendChild(actor);
+
+            }
+            pelicula.appendChild(listaActores);
+            root.appendChild(pelicula); //insertamos correctamente la <pelicula> dentro del XML
+            // Guardar XML actualizado con buena indentación
+            guardarDocumento(doc, fichero);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); //todo meter Excepciones en todos
         }
     }
 
     public List<Pelicula> listar() {
         List<Pelicula> lista = new ArrayList<>();
-        try {
-            File f = new File(fichero);
+        int id;
+        String titulo;
+        int duracion;
+        List<Actor> listaActores;
+        int idActor;
+        String nombre;
+        int edad;
+        String personaje;
+        Element e = null;
+        Element actorElem;
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(f);
+        Document doc = crearDocuemnto();
 
-            NodeList peliculasNode = doc.getElementsByTagName("pelicula");
+        NodeList peliculas = doc.getElementsByTagName("pelicula");
+        for (int j = 0; j < peliculas.getLength(); j++) {
+            e = (Element) peliculas.item(j);
 
-            for (int i = 0; i < peliculasNode.getLength(); i++) {
-                Node node = peliculasNode.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element e = (Element) node;
+            id = Integer.parseInt(e.getElementsByTagName("id").item(0).getTextContent());
+            titulo = e.getElementsByTagName("titulo").item(0).getTextContent();
+            duracion = Integer.parseInt(e.getElementsByTagName("duracion").item(0).getTextContent());
 
-                    int id = Integer.parseInt(e.getElementsByTagName("id").item(0).getTextContent());
-                    String titulo = e.getElementsByTagName("titulo").item(0).getTextContent();
-                    int duracion = Integer.parseInt(e.getElementsByTagName("duracion").item(0).getTextContent());
-                    int minutos = Integer.parseInt(e.getElementsByTagName("minutos").item(0).getTextContent());
+            listaActores = new ArrayList<>(); //creamos una lista para añadir los nodos
+            NodeList actoresNodes = e.getElementsByTagName("actor"); //cogemos el NodeList para recorrer la lista de nodos  de actores
+            for (int i = 0; i < actoresNodes.getLength(); i++) {
+                actorElem = (Element) actoresNodes.item(i);//castear la lista de nodeList de actores para tenerlos como element
 
-                    lista.add(new Pelicula(id, titulo, duracion, minutos));
-                }
+                idActor = Integer.parseInt(actorElem.getElementsByTagName("id").item(0).getTextContent());
+                nombre = actorElem.getElementsByTagName("nombre").item(0).getTextContent();
+                edad = Integer.parseInt(actorElem.getElementsByTagName("edad").item(0).getTextContent());
+                personaje = actorElem.getElementsByTagName("personaje").item(0).getTextContent();
+
+                listaActores.add(new Actor(idActor, nombre, edad, personaje)); //los añadimos a la lista de Actores para poder devovler la pelicula
+
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            lista.add(new Pelicula(id, titulo, duracion, listaActores));
         }
+
         return lista;
+
     }
 
     public void actualizar(Pelicula p) {
-        try {
-            File f = new File(fichero);
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(f);
+        int idActual;
+        int idActualActor;
 
-            NodeList peliculasNode = doc.getElementsByTagName("pelicula");
+        NodeList peliculasNode;
+        NodeList actoresNode;
+        Node nodePelicula;
+
+
+        try {
+
+            Document doc = crearDocuemnto();
+
+            peliculasNode = doc.getElementsByTagName("pelicula"); //en el nodeList almaceno lo que tengo en el doc
 
             for (int i = 0; i < peliculasNode.getLength(); i++) {
-                Node node = peliculasNode.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element e = (Element) node;
-                    int idActual = Integer.parseInt(e.getElementsByTagName("id").item(0).getTextContent());
+                    nodePelicula = peliculasNode.item(i);
+
+                if (nodePelicula.getNodeType() == Node.ELEMENT_NODE) {
+                    Element elementPelicula = (Element) nodePelicula;
+                    //COGEMOS el id de la pelicula actual del XML
+
+                    idActual = Integer.parseInt(elementPelicula.getElementsByTagName("id").item(0).getTextContent());
+
+                    //si los ids coinciden, entonces actualizamos las etiquetas
                     if (idActual == p.getId()) {
-                        e.getElementsByTagName("titulo").item(0).setTextContent(p.getTitulo());
-                        e.getElementsByTagName("duracion").item(0).setTextContent(p.getDuracion());
-                        e.getElementsByTagName("minutos").item(0).setTextContent(String.valueOf(p.getMinutos()));
+                        if (p.getTitulo() != null && !p.getTitulo().isEmpty()) {
+                            Node tituloNode = elementPelicula.getElementsByTagName("titulo").item(0);
+                            if (tituloNode != null) {
+                                tituloNode.setTextContent(p.getTitulo());
+                            }
+                        }
+
+                        if (p.getDuracion() != 0) {
+                            Node duracionNode = elementPelicula.getElementsByTagName("duracion").item(0);
+                            if (duracionNode != null) {
+                                duracionNode.setTextContent(String.valueOf(p.getDuracion()));
+                            }
+                        }
+                    }
+                    //ahora pillamos los actores de la peliculas actual
+                    actoresNode = elementPelicula.getElementsByTagName("actores");
+
+                    //recorremos los actores actuales de la pelicula actual
+                    for (int j = 0; j < actoresNode.getLength(); j++) {
+                        Node actorNode = actoresNode.item(j);
+                        if (actorNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element actorElement = (Element) actorNode;
+                            //obtenemos su id
+                            idActualActor = Integer.parseInt(actorElement.getElementsByTagName("id").item(0).getTextContent());
+                            for (Actor a : p.getListaActores()) {
+
+                                //si coincide el id del actor actual con el id del actor nuevo, actualizamos sus campos
+                                if (idActualActor == a.getId()) {
+                                    actorElement.getElementsByTagName("nombre").item(0).setTextContent(a.getNombre());
+                                    actorElement.getElementsByTagName("edad").item(0).setTextContent(String.valueOf(a.getEdad()));
+                                    actorElement.getElementsByTagName("personaje").item(0).setTextContent(a.getPersonaje());
+
+                                }
+                            }
+                        }
                     }
                 }
+
             }
 
-            guardarDocumento(doc, f);
+            guardarDocumento(doc, fichero);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,10 +223,7 @@ public class RepositorioXML {
 
     public void borrar(int id) {
         try {
-            File f = new File(fichero);
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(f);
+            Document doc = crearDocuemnto();
 
             NodeList peliculasNode = doc.getElementsByTagName("pelicula");
 
@@ -164,18 +238,72 @@ public class RepositorioXML {
                 }
             }
 
-            guardarDocumento(doc, f);
+            guardarDocumento(doc, fichero);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
+    public Document crearDocuemnto() {
+        Document doc = null;
+        DocumentBuilder builder = null;
+        DocumentBuilderFactory factory = null;
+
+
+        try {
+            factory = DocumentBuilderFactory.newInstance();
+            builder = factory.newDocumentBuilder();
+
+            if (!fichero.exists()) {
+                // Crear XML inicial
+                doc = builder.newDocument();
+                Element root = doc.createElement("peliculas");
+                doc.appendChild(root);
+
+                guardarDocumento(doc, fichero);
+            } else {
+                // Cargar el existente
+                doc = builder.parse(fichero);
+                doc.getDocumentElement().normalize();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return doc;
+    }
+
+    private void limpiarNodosTextoVacios(Node node) {
+        NodeList hijos = node.getChildNodes();
+
+        for (int i = hijos.getLength() - 1; i >= 0; i--) {
+            Node hijo = hijos.item(i);
+
+            if (hijo.getNodeType() == Node.TEXT_NODE &&
+                    hijo.getTextContent().trim().isEmpty()) {
+                node.removeChild(hijo);
+            }
+            else if (hijo.getNodeType() == Node.ELEMENT_NODE) {
+                limpiarNodosTextoVacios(hijo);
+            }
+        }
+    }
+
+
     private void guardarDocumento(Document doc, File f) throws TransformerException {
+
+       limpiarNodosTextoVacios(doc);
+
+        doc.normalizeDocument(); // Limpia texto basura y nodos vacíos
+
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
 
-// Configuración para XML legible
+        // Configuración para XML legible
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
@@ -184,6 +312,5 @@ public class RepositorioXML {
         transformer.transform(new DOMSource(doc), new StreamResult(f));
     }
 }
-
 
 

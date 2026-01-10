@@ -9,6 +9,8 @@ public class ListaPeliculas {
         this.listaPeliculas = listaPeliculas;
     }
 
+
+
     public List<Pelicula> getListaPeliculas() {
         return listaPeliculas;
     }
