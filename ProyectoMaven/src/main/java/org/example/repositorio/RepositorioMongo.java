@@ -27,8 +27,8 @@ public class RepositorioMongo implements IRepositorio {
             Properties props = new Properties();
             props.load(getClass().getClassLoader().getResourceAsStream("application.properties"));
 
-            String mongoUri = props.getProperty("db.mongo.uri", "mongodb://localhost:27017");
-            String dbName = props.getProperty("db.mongo.name", "cine");
+            String mongoUri = props.getProperty("db.mongo.uri");
+            String dbName = props.getProperty("db.mongo.name");
 
             // Creamos la conexión con MongoDB
             mongoClient = MongoClients.create(mongoUri);

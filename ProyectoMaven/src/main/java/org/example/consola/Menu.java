@@ -94,7 +94,7 @@ public class Menu {
 
                 case 1:
 
-                    id = Escaner.leerEntero("Dime ID de la Pelicula: ");
+                    id = Escaner.leerEntero("Dime ID de la Pelicula (0 para autogenerar):");
                     titulo = Escaner.pedirString("Dime Titulo de la Pelicula");
                     duracion = Escaner.leerEntero("Dime la duracion (minutos) de la Pelicula");
 
@@ -107,6 +107,7 @@ public class Menu {
                         personaje = Escaner.pedirString("Dime el personaje del Actor");
 
                         listaActores.add(new Actor(idActor, nombre, edad, personaje));
+
                     }
 
                     controladorTotal.guardar(id, titulo, duracion, listaActores);
