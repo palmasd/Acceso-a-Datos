@@ -81,16 +81,14 @@ public class Menu {
             int idActualizado;
             String nuevoTitulo;
             int nuevaDuracion;
-            List<Actor> nuevaListaActores = new ArrayList<>();
+            List<Actor> nuevaListaActores;
             int nuevoIdActor;
             String nuevoNombre;
             int nuevaEdad;
             String nuevoPersonaje;
 
             int idBorrar;
-
             int numActores;
-
 
             switch (opciones) {
 
@@ -128,28 +126,49 @@ public class Menu {
                 case 3:
                     idActualizado = Escaner.leerEntero("Dime ID de la Pelicula: ");
 
-                    String respTitulo = Escaner.pedirString("Actualizar título? (s/n");
-                    nuevoTitulo = respTitulo.equalsIgnoreCase("s") ? Escaner.pedirString("Nuevo Titulo: ") : null;
+                    Pelicula peliculaActual = controladorTotal.buscarPorId(idActualizado); //buscar la peli por su id la guardamos en un objeto de pelicula
 
-                    String respDuracion = Escaner.pedirString("Actualizar Duracion? (s/n");
-                    nuevaDuracion = (respDuracion.equalsIgnoreCase("s") ? Escaner.leerEntero("Nuevo Duracion: ") : 0);
+                    if (peliculaActual != null) {
 
-                    String respActores = Escaner.pedirString("Actualizar Actores? (s/n");
-                    if (respActores.equalsIgnoreCase("s")) {
-                        numActores = Escaner.leerEntero("Dime cuantos Actores quieres");
-                        for (int i = 0; i < numActores; i++) {
-                            Consola.mostrarString("Actor numero #" + (i + 1));
-                            nuevoIdActor = Escaner.leerEntero("Dime el ID del Actor");
-                            nuevoNombre = Escaner.pedirString("Dime el nombre del Actor");
-                            nuevaEdad = Escaner.leerEntero("Dime la edad del Actor");
-                            nuevoPersonaje = Escaner.pedirString("Dime el personaje del Actor");
+                        //ACTUALIZAR TITULO
+                        String respTitulo = Escaner.pedirString("Actualizar título? (s/n)");
+                            if (respTitulo.equalsIgnoreCase("s")) {
+                                nuevoTitulo = Escaner.pedirString("Nuevo Titulo: ");
+                            } else {
+                                nuevoTitulo = peliculaActual.getTitulo(); //si no quieres actualizar el titulo te quedas con el actual
+                            }
 
-                            nuevaListaActores.add(new Actor(nuevoIdActor, nuevoNombre, nuevaEdad, nuevoPersonaje));
+                         //ACTUALIZAR DURACION
+                        String respDuracion = Escaner.pedirString("Actualizar Duracion? (s/n)");
+                            if (respDuracion.equalsIgnoreCase("s")){
+                                nuevaDuracion = Escaner.leerEntero("Nueva Duracion");
+                            } else {
+                                nuevaDuracion = peliculaActual.getDuracion();
+                            }
+
+                        //ACTUALIZAR ACTORES
+                        String respActores = Escaner.pedirString("Actualizar Actores? (s/n)");
+                        if (respActores.equalsIgnoreCase("s")) {
+                            nuevaListaActores = new ArrayList<>();
+                            numActores = Escaner.leerEntero("Dime cuantos Actores quieres");
+                            for (int i = 0; i < numActores; i++) {
+                                Consola.mostrarString("Actor numero #" + (i + 1));
+                                nuevoIdActor = Escaner.leerEntero("Dime el ID del Actor");
+                                nuevoNombre = Escaner.pedirString("Dime el nombre del Actor");
+                                nuevaEdad = Escaner.leerEntero("Dime la edad del Actor");
+                                nuevoPersonaje = Escaner.pedirString("Dime el personaje del Actor");
+
+                                nuevaListaActores.add(new Actor(nuevoIdActor, nuevoNombre, nuevaEdad, nuevoPersonaje));
+                            }
+                        } else{
+                            nuevaListaActores = peliculaActual.getListaActores(); //si el usuario no quiere actualizar actores, se queda la lista de actores actuales
                         }
-                    }
 
-                    controladorTotal.actualizar(idActualizado, nuevoTitulo, nuevaDuracion, nuevaListaActores);
-                    Consola.mostrarString("Pelicula actualizada correctamente");
+                        controladorTotal.actualizar(idActualizado, nuevoTitulo, nuevaDuracion, nuevaListaActores);
+                        Consola.mostrarString("Pelicula actualizada correctamente");
+                    }else {
+                        Consola.mostrarString("Pelicula con ese id no encontrada");
+                    }
                     break;
 
                 case 4:

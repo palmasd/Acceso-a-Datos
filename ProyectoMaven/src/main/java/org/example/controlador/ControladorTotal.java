@@ -27,6 +27,10 @@ public class ControladorTotal {
         return servicio.listar();
     }
 
+    public Pelicula buscarPorId(int id){
+        return servicio.buscarPorId(id);
+    }
+
     public void actualizar(int idNuevo, String nuevoTitulo, int nuevaDuracion, List<Actor> nuevosActores){
         Pelicula pelicula = new Pelicula(idNuevo, nuevoTitulo, nuevaDuracion, nuevosActores);
         servicio.actualizar(pelicula);

@@ -20,9 +20,22 @@
         <actores>
             <actor>
                 <id>1</id>
-                <nombre>david</nombre>
-                <edad>12</edad>
-                <personaje>personajeeees</personaje>
+                <nombre>pepe</nombre>
+                <edad>21</edad>
+                <personaje>principal</personaje>
+            </actor>
+        </actores>
+    </pelicula>
+    <pelicula>
+        <id>1</id>
+        <titulo>nueva pelicula</titulo>
+        <duracion>13</duracion>
+        <actores>
+            <actor>
+                <id>1</id>
+                <nombre>pepe</nombre>
+                <edad>21</edad>
+                <personaje>principal</personaje>
             </actor>
         </actores>
     </pelicula>

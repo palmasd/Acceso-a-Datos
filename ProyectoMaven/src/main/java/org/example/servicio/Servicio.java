@@ -20,6 +20,16 @@ public class Servicio {
         return repositorio.listar();
     }
 
+    public Pelicula buscarPorId(int id) {
+        List<Pelicula> lista = listar();
+        for (Pelicula p : lista) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public void actualizar(Pelicula  p){
         repositorio.actualizar(p);
     }
