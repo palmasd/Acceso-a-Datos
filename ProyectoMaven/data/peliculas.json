@@ -7,7 +7,15 @@
   {
     "id": 2,
     "titulo": "Sombras en la Ciudad",
-    "duracion": 118
+    "duracion": 50,
+    "listaActores": [
+      {
+        "id": 1,
+        "nombre": "jorge",
+        "edad": 23,
+        "personaje": "ninguno"
+      }
+    ]
   },
   {
     "id": 1,
@@ -19,25 +27,6 @@
         "nombre": "david",
         "edad": 13,
         "personaje": "pricnipal"
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "titulo": "espias3",
-    "duracion": 1,
-    "listaActores": [
-      {
-        "id": 1,
-        "nombre": "enrique",
-        "edad": 17,
-        "personaje": "secun"
-      },
-      {
-        "id": 2,
-        "nombre": "juanga",
-        "edad": 45,
-        "personaje": "principal"
       }
     ]
   }

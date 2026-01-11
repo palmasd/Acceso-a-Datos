@@ -66,7 +66,7 @@ public class RepositorioPostgreSql implements IRepositorio {
                 stmt.executeUpdate();
             }
 
-            System.out.println("antes del bucle for");
+
             // Insertar actores
             for (Actor a : p.getListaActores()) {
                 stmtAct = connection.prepareStatement(sqlAct);
@@ -86,8 +86,6 @@ public class RepositorioPostgreSql implements IRepositorio {
                 stmtAct.close();
             }
 
-            System.out.println("deespues del bucle");
-
             connection.commit(); // confirmamos transacción
             connection.setAutoCommit(true);
 
@@ -95,6 +93,7 @@ public class RepositorioPostgreSql implements IRepositorio {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
+                throw new ExcepcionRepositorio("Error la recuperar datos", e);
             }
             throw new ExcepcionRepositorio("Error insertando película: ", e);
         } finally {
@@ -166,7 +165,7 @@ public class RepositorioPostgreSql implements IRepositorio {
             try {
                 connection.setAutoCommit(false); // inicio de transacción
 
-                // 1️⃣ Actualizar película
+                //Actualizar película
                 try (PreparedStatement stmtPel = connection.prepareStatement(sqlPel)) {
                     stmtPel.setString(1, p.getTitulo());
                     stmtPel.setInt(2, p.getDuracion());
@@ -174,13 +173,13 @@ public class RepositorioPostgreSql implements IRepositorio {
                     stmtPel.executeUpdate();
                 }
 
-                // 2️⃣ Borrar actores antiguos
+                //Borrar actores antiguos
                 try (PreparedStatement stmtDel = connection.prepareStatement(sqlDelAct)) {
                     stmtDel.setLong(1, p.getId());
                     stmtDel.executeUpdate();
                 }
 
-                // 3️⃣ Insertar actores nuevos
+                //Insertar actores nuevos
                 try (PreparedStatement stmtIns = connection.prepareStatement(sqlInsAct)) {
                     for (Actor a : p.getListaActores()) {
                         stmtIns.setLong(1, p.getId());
@@ -212,7 +211,7 @@ public class RepositorioPostgreSql implements IRepositorio {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error borrando película: " + e.getMessage());
+            throw new ExcepcionRepositorio("Error borrando película: ", e);
         }
     }
 

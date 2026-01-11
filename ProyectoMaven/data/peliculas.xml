@@ -2,40 +2,20 @@
 <peliculas>
     <pelicula>
         <id>1</id>
-        <titulo>espias 2</titulo>
-        <duracion>3423</duracion>
-        <actores>
-            <actor>
-                <id>103</id>
-                <nombre>Carlos García</nombre>
-                <edad>40</edad>
-                <personaje>Villano</personaje>
-            </actor>
-        </actores>
-    </pelicula>
-    <pelicula>
-        <id>2</id>
-        <titulo>juan</titulo>
-        <duracion>12344</duracion>
+        <titulo>nuevaPeli</titulo>
+        <duracion>50</duracion>
         <actores>
             <actor>
                 <id>1</id>
-                <nombre>pepe</nombre>
-                <edad>21</edad>
-                <personaje>principal</personaje>
+                <nombre>juan</nombre>
+                <edad>27</edad>
+                <personaje>adiestrador</personaje>
             </actor>
-        </actores>
-    </pelicula>
-    <pelicula>
-        <id>1</id>
-        <titulo>nueva pelicula</titulo>
-        <duracion>13</duracion>
-        <actores>
             <actor>
-                <id>1</id>
-                <nombre>pepe</nombre>
-                <edad>21</edad>
-                <personaje>principal</personaje>
+                <id>2</id>
+                <nombre>sebastian</nombre>
+                <edad>35</edad>
+                <personaje>peluche</personaje>
             </actor>
         </actores>
     </pelicula>
