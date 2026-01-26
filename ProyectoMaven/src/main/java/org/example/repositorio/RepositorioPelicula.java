@@ -1,8 +1,10 @@
 package org.example.repositorio;
 
+import org.example.excepciones.ExcepcionRepositorio;
 import org.example.modelo.Actor;
 import org.example.modelo.Pelicula;
 import org.example.servicio.IRepositorio;
+import org.example.utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,44 +12,156 @@ import java.util.List;
 
 public class RepositorioPelicula implements IRepositorio {
 
-    private Connection conexion;
+    private final Connection conexion;
 
     public RepositorioPelicula() {
-        this.conexion = conexion;
+        this.conexion = DBConnection.getConnection();
     }
 
-    public void guardar(Pelicula pelicula){
+    public void guardar(Pelicula p) {
 
-        List<Actor> Actores = pelicula.getListaActores();
+        String sqlPel = "INSERT INTO pelicula (titulo, duracion) VALUES (?, ?)";
+        String sqlAct = "INSERT INTO actor (id_pelicula, nombre, edad, personaje) VALUES (?, ?, ?, ?)";
 
-        String sql = "INSERT INTO PELICULA(id, titulo, duracion) VALUE (?, ? ,?)";
-        String sqlActor = "INSERT INTO Actores(nombre, edad, personaje) VALUE (?, ? ,?)";
-        PreparedStatement stPeliculas = null;
-        PreparedStatement stActores = null;
-
-
-        try{
+        PreparedStatement stmtPel = null;
+        PreparedStatement stmtAct = null;
+        ResultSet rsKeys = null;
+        long idPelicula;
+        try {
             conexion.setAutoCommit(false);
 
-            //PrepareStatement para tablas Peliculas
-            stPeliculas = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            idPelicula = p.getId();
 
-            stPeliculas.setLong(1, pelicula.getId());
-            stPeliculas.setString(1, pelicula.getTitulo());
-            stPeliculas.setInt(1, pelicula.getDuracion());
+            // Si el ID es 0 → MySQL autogenera
+            if (idPelicula == 0) {
+                // Insertar película (ID autogenerado)
+                stmtPel = conexion.prepareStatement(sqlPel, Statement.RETURN_GENERATED_KEYS);
+                stmtPel.setString(1, p.getTitulo());
+                stmtPel.setInt(2, p.getDuracion());
+                stmtPel.executeUpdate();
 
-            stPeliculas.executeUpdate(); //este es para los INSERT / DELETE / UPDATE
+                rsKeys = stmtPel.getGeneratedKeys();
+                if (rsKeys.next()) {
+                    p.setId(rsKeys.getLong(1));
+                }
+            }
 
+            // Insertar actores
+            stmtAct = conexion.prepareStatement(sqlAct);
+            for (Actor a : p.getListaActores()) {
+                stmtAct.setLong(1, p.getId());
+                stmtAct.setString(2, a.getNombre());
+                stmtAct.setInt(3, a.getEdad());
+                stmtAct.setString(4, a.getPersonaje());
+                stmtAct.executeUpdate();
+            }
 
-            //PrepareStatement para tablas Actores
-            stActores = conexion.prepareStatement(sqlActor, Statement.RETURN_GENERATED_KEYS);
+            conexion.commit();
 
-            for (Actor act: Actores){
-                stActores.setString(1, act.getNombre());
-                stActores.setInt(2, act.getEdad());
-                stActores.setString(3, act.getPersonaje());
+        } catch (SQLException e) {
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+            }
+            throw new ExcepcionRepositorio("Error insertando película", e);
 
-                stActores.executeUpdate();
+        } finally {
+            try {
+
+                if (stmtPel != null) {
+                    stmtPel.close();
+                }
+
+                if (stmtAct != null) {
+                    stmtAct.close();
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException("Error al cerrar los recursos" + e);
+            }
+        }
+    }
+
+    public List<Pelicula> listar() {
+
+        String sql = "SELECT * FROM vista_peliculas_actores"; //falta crear la vista
+
+        List<Pelicula> peliculas = new ArrayList<>();
+        Pelicula peliculaActual = null;
+        long idPeliculaActual = -1;
+        int idActor;
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        try  {
+             stmt = conexion.prepareStatement(sql);
+             rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                long idPelicula = rs.getLong("pelicula_id");
+
+                // Si cambia la película, creamos una nueva
+                if (peliculaActual == null || idPelicula != idPeliculaActual) {
+
+                    peliculaActual = new Pelicula(
+                            idPelicula,
+                            rs.getString("titulo"),
+                            rs.getInt("duracion"),
+                            new ArrayList<>()
+                    );
+
+                    peliculas.add(peliculaActual);
+                    idPeliculaActual = idPelicula;
+                }
+
+                // Si hay actor, lo añadimos
+                idActor = rs.getInt("actor_id");
+                if (!rs.wasNull()) {
+                    peliculaActual.getListaActores().add(
+                            new Actor(
+                                    idActor,
+                                    rs.getString("nombre"),
+                                    rs.getInt("edad"),
+                                    rs.getString("personaje")
+                            )
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new ExcepcionRepositorio("Error listando películas (vista)", e);
+        }
+
+        return peliculas;
+    }
+
+    public void actualizar(Pelicula pelicula) {
+
+        PreparedStatement st = null;
+        PreparedStatement stActor = null;
+
+        String sql = "UPDATE pelicula SET titulo = ?, duracion = ? WHERE id = ?";
+        String sqlActor = "UPDATE actor SET nombre = ?, edad = ?, personaje = ? WHERE id = ?";
+
+        try {
+            conexion.setAutoCommit(false);
+
+            // UPDATE PELICULA
+            st = conexion.prepareStatement(sql);
+            st.setString(1, pelicula.getTitulo());
+            st.setInt(2, pelicula.getDuracion());
+            st.setLong(3, pelicula.getId());
+            st.executeUpdate();
+
+            // UPDATE ACTORES
+            stActor = conexion.prepareStatement(sqlActor);
+            for (Actor act : pelicula.getListaActores()) {
+                stActor.setString(1, act.getNombre());
+                stActor.setInt(2, act.getEdad());
+                stActor.setString(3, act.getPersonaje());
+                stActor.setLong(4, act.getId());
+                stActor.executeUpdate();
             }
 
             conexion.commit();
@@ -55,135 +169,73 @@ public class RepositorioPelicula implements IRepositorio {
         } catch (SQLException e) {
             try {
                 if (conexion != null) {
-                    conexion.rollback(); // ¡Error! Deshacer todo
+                    conexion.rollback();
                 }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-            throw new RuntimeException("Error en la conexion a base de datos " + e);
+            throw new ExcepcionRepositorio("Error al actualizar película", e);
+
         } finally {
-                try {
-
-                    if (stPeliculas != null){
-                        stPeliculas.close();
-                    }
-
-                    if (stActores != null){
-                        stActores.close();
-                    }
-
-                    if (conexion != null) {
-                        conexion.close();
-                    }
-                } catch (SQLException e) {
-                    throw new RuntimeException("Error al cerrar los recursos"+ e);
+            try {
+                if (stActor != null) {
+                    stActor.close();
                 }
-        }
-    }
-
-    public List<Pelicula> listar(){
-
-        String sql = "SELECT * FROM PELICULA";
-        PreparedStatement stPeliculas = null;
-        ResultSet rs = null;
-        Pelicula pelis = null;
-        List<Pelicula> listaPelis = new ArrayList<>();
-
-        try{
-
-            stPeliculas = conexion.prepareStatement(sql);
-
-            rs = stPeliculas.executeQuery(); // el executeQuery para las lecturas
-
-            while(rs.next()){
-
-                long id = rs.getLong("id");
-                String titulo = rs.getString("titulo");
-                int duracion = rs.getInt("duracion");
-                pelis = new Pelicula(id, titulo, duracion, new ArrayList<>());
-
-                for (Pelicula p: listaPelis){
-                    int idActor = rs.getInt("id");
-                    String nombre = rs.getString("nombre");
-                    int edad = rs.getInt("edad");
-                    String personaje = rs.getString("personaje");
-                    p.getListaActores().add(new Actor(idActor, nombre, edad, personaje));
+                if (st != null) {
+                    st.close();
                 }
-                listaPelis.add(pelis);
+                conexion.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new ExcepcionRepositorio("Error cerrando recursos", e);
             }
-
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
-
-        return listaPelis;
     }
 
-    public void actualizar(Pelicula pelicula){
-
-        List<Actor> Actores = pelicula.getListaActores();
+    public void borrar(int id) {
 
         PreparedStatement st = null;
-        PreparedStatement stActor = null;
-        String sql = "UPDATE Peliculas SET titulo = ?, duracion = ? WHERE id = ?";
-        String sqlActor = "UPDATE Actores SET nombre = ?, edad = ?, personaje = ? WHERE id = ?";
+        String sql = "DELETE FROM pelicula WHERE id = ?";
 
-        try{
-            //Stattement para Peliculas
+        try {
+            conexion.setAutoCommit(false);
+
             st = conexion.prepareStatement(sql);
-
-            st.setString(1, pelicula.getTitulo());
-            st.setInt(2, pelicula.getDuracion());
-            st.setLong(3, pelicula.getId());
+            st.setInt(1, id);
             st.executeUpdate();
-
-
-            //Stattement para Actores
-            stActor = conexion.prepareStatement(sqlActor);
-
-            for (Actor act: Actores){
-                stActor.setString(1, act.getNombre());
-                stActor.setInt(2, act.getEdad());
-                stActor.setString(3, act.getPersonaje());
-                stActor.setInt(4, act.getId());
-
-                stActor.executeUpdate();
-            }
 
             conexion.commit();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }finally {
-            try{
+            try {
+                if (conexion != null){
+                    conexion.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            throw new RuntimeException("Error borrando película", e);
 
-                if (st != null){
+        } finally {
+            try {
+                if (st != null) {
                     st.close();
                 }
-
+                conexion.setAutoCommit(true);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error cerrando recursos", e);
             }
         }
-
     }
 
-    public void borrar(int id){
-        String tablaPreguntas = "delete from preguntas WHERE id = ? ";
-
-        PreparedStatement statementP = null;
-
-        try{
-            statementP = conexion.prepareStatement(tablaPreguntas, Statement.RETURN_GENERATED_KEYS); //
-
-            statementP.setInt(1, id);
-
-            statementP.executeUpdate();
-
+    public void cerrarConexion() {
+        try {
+            if (conexion != null && !conexion.isClosed()) {
+                conexion.close();
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error cerrando la conexión", e);
         }
     }
+
 
 }

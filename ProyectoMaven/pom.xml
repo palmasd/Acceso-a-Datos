@@ -42,5 +42,12 @@
           <artifactId>postgresql</artifactId>
           <version>42.6.0</version>
       </dependency>
+
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.45</version> <!-- o la versión que descargaste -->
+      </dependency>
+
   </dependencies>
 </project>

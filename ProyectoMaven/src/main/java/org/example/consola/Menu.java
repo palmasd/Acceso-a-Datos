@@ -42,6 +42,7 @@ public class Menu {
                 break;
             case 3:
                 repositorio = new RepositorioPelicula();
+
                 break;
             case 4:
                 repositorio = new RepositorioMongo();
@@ -181,6 +182,10 @@ public class Menu {
                 case 5:
                     flag = false;
                     Consola.mostrarString("aplicacion Cerrada correctamene");
+                    // Cerrar conexión si el repositorio tiene método de cierre
+                    if (repositorio instanceof RepositorioPelicula) {
+                        ((RepositorioPelicula) repositorio).cerrarConexion();
+                    }
                     break;
                 default:
                     Consola.mostrarString("Opción Inválida");
