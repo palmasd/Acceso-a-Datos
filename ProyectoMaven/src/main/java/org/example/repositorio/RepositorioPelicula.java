@@ -6,7 +6,11 @@ import org.example.modelo.Pelicula;
 import org.example.servicio.IRepositorio;
 import org.example.utils.DBConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 

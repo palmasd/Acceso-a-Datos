@@ -1,6 +1,5 @@
 package org.example.repositorio;
 
-
 import org.example.modelo.Actor;
 import org.example.modelo.Pelicula;
 import org.example.servicio.IRepositorio;

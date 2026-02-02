@@ -2,7 +2,11 @@ package org.example.repositorio;
 
 //TODO: imports de * no tiene que haber
 
-import com.mongodb.client.*;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
@@ -50,6 +54,7 @@ public class RepositorioMongo implements IRepositorio {
     public void guardar(Pelicula p) {
         try {
             List<Document> actoresDoc = new ArrayList<>();
+
             for (Actor x : p.getListaActores()) {
                 actoresDoc.add(new Document()
                         .append("id", x.getId())
@@ -93,17 +98,17 @@ public class RepositorioMongo implements IRepositorio {
 
             for (Document doc : docs) {
 
-                id = ((Number)doc.get("id")).intValue();
+                id = ((Number) doc.get("id")).intValue();
                 titulo = doc.getString("titulo");
-                duracion = ((Number)doc.get("duracion")).intValue();
+                duracion = ((Number) doc.get("duracion")).intValue();
                 listaDocActores = doc.getList("listaActores", Document.class);
 
                 listaActores = new ArrayList<>();
                 if (listaDocActores != null) {
                     for (Document x : listaDocActores) {
-                        idActor = ((Number)x.get("id")).intValue();
+                        idActor = ((Number) x.get("id")).intValue();
                         nombre = x.getString("nombre");
-                        edad = ((Number)x.get("edad")).intValue();
+                        edad = ((Number) x.get("edad")).intValue();
                         personaje = x.getString("personaje");
                         listaActores.add(actor = new Actor(idActor, nombre, edad, personaje));
                     }

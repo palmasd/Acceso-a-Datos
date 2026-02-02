@@ -1,10 +1,5 @@
 [
   {
-    "id": 1,
-    "titulo": "El Viaje Intergaláctico",
-    "duracion": 142
-  },
-  {
     "id": 2,
     "titulo": "Sombras en la Ciudad",
     "duracion": 50,
@@ -19,14 +14,46 @@
   },
   {
     "id": 1,
-    "titulo": "España",
-    "duracion": 133,
+    "titulo": "nuevaPeli",
+    "duracion": 50,
     "listaActores": [
       {
         "id": 1,
-        "nombre": "david",
-        "edad": 13,
-        "personaje": "pricnipal"
+        "nombre": "juan",
+        "edad": 27,
+        "personaje": "adiestrador"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "titulo": "paples",
+    "duracion": 50,
+    "listaActores": [
+      {
+        "id": 2,
+        "nombre": "albajon",
+        "edad": 45,
+        "personaje": "mujer3"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "titulo": "avatar",
+    "duracion": 3,
+    "listaActores": [
+      {
+        "id": 1,
+        "nombre": "juan",
+        "edad": 23,
+        "personaje": "principal"
+      },
+      {
+        "id": 2,
+        "nombre": "enrique",
+        "edad": 25,
+        "personaje": "secundario"
       }
     ]
   }

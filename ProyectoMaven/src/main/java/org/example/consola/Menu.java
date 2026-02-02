@@ -6,6 +6,7 @@ import org.example.modelo.Pelicula;
 import org.example.repositorio.*;
 import org.example.servicio.IRepositorio;
 import org.example.servicio.Servicio;
+import org.example.servicio.ServicioMigracion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ public class Menu {
 
     public void iniciar() {
 
+
+
         // PRIMERA PARTE: seleccionar repositorio
         Consola.mostrarString("=== Selecciona el tipo de almacenamiento ===");
         Consola.mostrarString("1. XML");
@@ -30,7 +33,6 @@ public class Menu {
         Consola.mostrarString("5. PostgreSQL");
 
         int opcion = Escaner.leerEntero("Selecciona una opcion: ");
-        Escaner.limpiarBuffer();// Consumir el salto de línea
         IRepositorio repositorio = null;
 
         switch (opcion) {
@@ -66,7 +68,8 @@ public class Menu {
             Consola.mostrarString("2. Listar películas");
             Consola.mostrarString("3. Actualizar película");
             Consola.mostrarString("4. Borrar película");
-            Consola.mostrarString("5. Salir");
+            Consola.mostrarString("5. Migrar datos a XML");
+            Consola.mostrarString("6. Salir");
 
             int opciones = Escaner.leerEntero("Elige una opción: ");
 
@@ -148,7 +151,6 @@ public class Menu {
                                 nuevaDuracion = peliculaActual.getDuracion();
                             }
 
-                        //ACTUALIZAR ACTORES
                         String respActores = Escaner.pedirString("Actualizar Actores? (s/n)");
                         if (respActores.equalsIgnoreCase("s")) {
                             nuevaListaActores = new ArrayList<>();
@@ -180,6 +182,14 @@ public class Menu {
                     break;
 
                 case 5:
+                    Consola.mostrarString("Migrar a json");
+                    IRepositorio repoDestino = new RepositorioJSON("data/peliculas.json");
+                    ServicioMigracion migracion = new ServicioMigracion(repositorio, repoDestino);//el repositorio es el de origen y elegimos donde queremos migrar los datos
+                    migracion.migrarTodo();
+                    Consola.mostrarString("Migración a json realizada correctamente");
+                    break;
+
+                case 6:
                     flag = false;
                     Consola.mostrarString("aplicacion Cerrada correctamene");
                     // Cerrar conexión si el repositorio tiene método de cierre

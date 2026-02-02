@@ -10,11 +10,15 @@ import com.google.gson.reflect.TypeToken;
 import org.example.modelo.Pelicula;
 import org.example.servicio.IRepositorio;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-// ¿Excepciones...?
 
 public class RepositorioJSON implements IRepositorio {
 
@@ -33,16 +37,16 @@ public class RepositorioJSON implements IRepositorio {
     public RepositorioJSON(String fichero) {
         this.fichero = fichero;
 
-    // Configuración de Gson para que el archivo JSON sea legible (con saltos de línea y sangría).
-    // new Gson() funcionaría, pero produciría salida sin formato.
-    // Es interesante valorar esta función para archivos XML
+        // Configuración de Gson para que el archivo JSON sea legible (con saltos de línea y sangría).
+        // new Gson() funcionaría, pero produciría salida sin formato.
+        // Es interesante valorar esta función para archivos XML
         this.gson = new GsonBuilder().setPrettyPrinting().create();
 
-    // TypeToken captura el tipo real de List<Pelicula> evitando el borrado de tipos genéricos.
+        // TypeToken captura el tipo real de List<Pelicula> evitando el borrado de tipos genéricos.
         this.tipoListaPeliculas = new TypeToken<List<Pelicula>>() {
         }.getType();
 
-    // Si el archivo JSON no existe, se crea uno vacío con una lista de películas vacía.
+        // Si el archivo JSON no existe, se crea uno vacío con una lista de películas vacía.
         File f = new File(fichero);
         if (!f.exists()) {
             guardarLista(new ArrayList<>()); // JSON inicial: []

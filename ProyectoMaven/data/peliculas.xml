@@ -11,11 +11,37 @@
                 <edad>27</edad>
                 <personaje>adiestrador</personaje>
             </actor>
+        </actores>
+    </pelicula>
+    <pelicula>
+        <id>2</id>
+        <titulo>paples</titulo>
+        <duracion>50</duracion>
+        <actores>
             <actor>
                 <id>2</id>
-                <nombre>sebastian</nombre>
-                <edad>35</edad>
-                <personaje>peluche</personaje>
+                <nombre>albajon</nombre>
+                <edad>45</edad>
+                <personaje>mujer3</personaje>
+            </actor>
+        </actores>
+    </pelicula>
+    <pelicula>
+        <id>4</id>
+        <titulo>avatar</titulo>
+        <duracion>3</duracion>
+        <actores>
+            <actor>
+                <id>1</id>
+                <nombre>juan</nombre>
+                <edad>23</edad>
+                <personaje>principal</personaje>
+            </actor>
+            <actor>
+                <id>2</id>
+                <nombre>enrique</nombre>
+                <edad>25</edad>
+                <personaje>secundario</personaje>
             </actor>
         </actores>
     </pelicula>
